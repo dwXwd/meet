@@ -19,8 +19,8 @@ const credentials = {
   auth_uri: "https://accounts.google.com/o/oauth2/auth",
   token_uri: "https://oauth2.googleapis.com/token",
   auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-  redirect_uris: ["dwxwd.github.io/meet/"],
-  javascript_origins: ["dwxwd.github.io", "http://localhost:3000"],
+  redirect_uris: ["https://dwxwd.github.io/meet/"],
+  javascript_origins: ["https://dwxwd.github.io", "http://localhost:3000"],
 };
 const { client_secret, client_id, redirect_uris, calendar_id } = credentials;
 const oAuth2Client = new google.auth.OAuth2(
@@ -46,20 +46,19 @@ module.exports.getAuthURL = async () => {
    */
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: "offline",
-    scope: SCOPES
+    scope: SCOPES,
   });
 
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify({
-      authUrl: authUrl
+      authUrl: authUrl,
     }),
   };
 };
-
 
 module.exports.getAccessToken = async (event) => {
   // The values used to instantiate the OAuthClient are at the top of the file
@@ -89,9 +88,9 @@ module.exports.getAccessToken = async (event) => {
         return {
           statusCode: 200,
           headers: {
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*",
           },
-          body: JSON.stringify(token)
+          body: JSON.stringify(token),
         };
       })
       .catch((err) => {
@@ -99,10 +98,62 @@ module.exports.getAccessToken = async (event) => {
         console.error(err);
         return {
           statusCode: 500,
-          headers: {
-            "Access-Control-Allow-Origin": "*"
-          },
-          body: JSON.stringify(err)
+          body: JSON.stringify(err),
         };
       });
+  };
+
+  
+module.exports.getCalendarEvent = async (event) => {
+  // The values used to instantiate the OAuthClient are at the top of the file
+    const oAuth2Client = new google.auth.OAuth2(
+      client_id,
+      client_secret,
+      redirect_uris[0]
+    );
+    // Decode authorization code extracted from the URL query
+    const access_token = decodeURIComponent(`${event.pathParameters.access_token}`);
+    oAuth2Client.setCredentials({ access_token });
+  
+    return new Promise((resolve, reject) => {
+      /**
+       *  Exchange authorization code for access token with a “callback” after the exchange,
+       *  The callback in this case is an arrow function with the results as parameters: “err” and “token.”
+       */
+  
+       calendar.events.list(
+        {
+          calendarId: calendar_id,
+          auth: oAuth2Client,
+          timeMin: new Date().toISOString(),
+          singleEvents: true,
+          orderBy: "startTime",
+        },
+        (error, response) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(response);
+          }
+        }
+      );
+      })
+    .then((results) => {
+      // Respond with OAuth token 
+      return {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify( { events: results.data.items}),
+      };
+    })
+    .catch((err) => {
+      // Handle error
+      console.error(err);
+      return {
+        statusCode: 500,
+        body: JSON.stringify(err),
+      };
+    });
   };
