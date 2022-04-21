@@ -98,6 +98,9 @@ module.exports.getAccessToken = async (event) => {
         console.error(err);
         return {
           statusCode: 500,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
           body: JSON.stringify(err),
         };
       });
@@ -145,7 +148,7 @@ module.exports.getCalendarEvent = async (event) => {
         headers: {
           "Access-Control-Allow-Origin": "*"
         },
-        body: JSON.stringify( { events: results.data.items})
+        body: JSON.stringify( { events: results.data.items}),
       };
     })
     .catch((err) => {
@@ -154,12 +157,16 @@ module.exports.getCalendarEvent = async (event) => {
       return {
         statusCode: 500,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
 =======
 >>>>>>> Stashed changes
         body: JSON.stringify(err)
+=======
+        body: JSON.stringify(err),
+>>>>>>> Stashed changes
       };
     });
   };
