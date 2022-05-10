@@ -1,42 +1,19 @@
-import React, { Component } from 'react';
-import './App.css';
-import EventList from './EventList';
-import CitySearch from './CitySearch';
-import NumberOfEvents from './NumberOfEvents';
-import { mockData } from './mock-data';
-import { getEvents, extractLocations } from './api';
-
-import './nprogress.css';
+import React, { Component } from "react";
+import { extractLocations, getEvents } from "./api";
+import "./App.css";
+import CitySearch from "./CitySearch";
+import EventList from "./EventList";
+import "./nprogress.css";
+import NumberOfEvents from "./NumberOfEvents";
 
 class App extends Component {
-
-
   state = {
     events: [],
-    locations: []
-  }
+    locations: [],
+    numberOfEvents: 32,
+    currentLocation: "all",
+  };
 
-  updateEvents = (location) => {
-    getEvents().then((events) => {
-      const locationEvents = (location === 'all') ?
-        events :
-        events.filter((event) => event.location === location);
-      this.setState({
-        events: locationEvents
-      });
-    });
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <NumberOfEvents/>
-        <EventList events={this.state.events} />
-        <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
-
-      </div>
-    );
-  }
   componentDidMount() {
     this.mounted = true;
     getEvents().then((events) => {
@@ -46,8 +23,41 @@ class App extends Component {
     });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.mounted = false;
+  }
+
+  updateEvents = (location, eventCount = this.state.numberOfEvents) => {
+    getEvents().then((events) => {
+      const locationEvents =
+        location === "all"
+          ? events
+          : events.filter((event) => event.location === location);
+      this.setState({
+        events: locationEvents.slice(0, eventCount),
+        currentLocation: location,
+      });
+    });
+  };
+
+  updateNumberOfEvents = (numberOfEvents) => {
+    this.setState({
+      numberOfEvents: numberOfEvents,
+    });
+    this.updateEvents(this.state.currentLocation, numberOfEvents);
+  };
+
+  render() {
+    return (
+      <div className='App'>
+        <CitySearch
+          locations={this.state.locations}
+          updateEvents={this.updateEvents}
+        />
+        <NumberOfEvents updateNumberOfEvents={this.updateNumberOfEvents} />
+        <EventList events={this.state.events} />
+      </div>
+    );
   }
 }
 
