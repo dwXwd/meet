@@ -48,6 +48,7 @@ class App extends Component {
   };
 
   render() {
+    const { locations, events } = this.state;
     return (
       <div className='App'>
         <CitySearch
@@ -59,6 +60,6 @@ class App extends Component {
       </div>
     );
   }
-}
+} 
 
 export default App;
