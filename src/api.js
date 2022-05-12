@@ -85,33 +85,37 @@ const getAccessToken = async () => {
 export const getEvents = async () => {
   NProgress.start();
 
-  if (window.location.href.startsWith("http://localhost")) {
-    NProgress.done();
-    return mockData;
+  // If the app is running on localhost, return the mock data 
+  if (window.location.href.startsWith('http://localhost')) {
+      NProgress.done();
+      return mockData;
   }
 
+  // If the user is offline, return the list of events previously stored in the localStorage
   if (!navigator.onLine) {
-    const data = localStorage.getItem("lastEvents");
-    NProgress.done();
-    return data ? JSON.parse(data).events : [];
+      console.log('Im offline!');
+      const data = localStorage.getItem("lastEvents");
+      NProgress.done();
+      return data ? JSON.parse(data).events : [];
   }
+
   const token = await getAccessToken();
 
   if (token) {
-    removeQuery();
-    const url =
-      "https://knbfcquoog.execute-api.eu-central-1.amazonaws.com/dev/api/get-events" +
-      "/" +
-      token;
-    const result = await axios.get(url);
-    if (result.data) {
-      var locations = extractLocations(result.data.events);
-      localStorage.setItem("lastEvents", JSON.stringify(result.data));
-      localStorage.setItem("locations", JSON.stringify(locations));
-    }
-    NProgress.done();
-    return result.data.events;
+      removeQuery();
+      // eslint-disable-next-line
+      const url = 'https://4hmms9mb9a.execute-api.eu-central-1.amazonaws.com/dev/api/get-events' + '/' + token;
+      const result = await axios.get(url);
+
+      if (result.data) {
+          var locations = extractLocations(result.data.events);
+          localStorage.setItem("lastEvents", JSON.stringify(result.data));
+          localStorage.setItem("locations", JSON.stringify(locations));
+      }
+      NProgress.done();
+      return result.data.events;
   }
+
 };
 
 
