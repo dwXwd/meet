@@ -51,11 +51,11 @@ class App extends Component {
     return (
       <div className='App'>
         <CitySearch
-          locations={this.state.locations}
+          locations={locations}
           updateEvents={this.updateEvents}
         />
         <NumberOfEvents updateNumberOfEvents={this.updateNumberOfEvents} />
-        <EventList events={this.state.events} />
+        <EventList events={events} />
       </div>
     );
   }
