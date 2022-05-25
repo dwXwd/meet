@@ -9,7 +9,7 @@
 .login_cont {
     margin: 10% 30%;
     padding: 5%;
-    border: 1px solid #ccc;
+    border: 1px solid rgb(1, 1, 1);
     border-radius: 4px;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
