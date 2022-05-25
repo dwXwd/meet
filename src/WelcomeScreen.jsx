@@ -26,7 +26,6 @@ class="btn-text"
 >
 <b>Sign in with google</b>
 </button>
-Page 1
 </div>
 </div>
 <a

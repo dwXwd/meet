@@ -67,7 +67,7 @@ const getAccessToken = async () => {
   const tokenCheck = accessToken && (await checkToken(accessToken));
 
   if (!accessToken || !tokenCheck) {
-    await localStorage.removeItem("access_torun ken");
+    await localStorage.removeItem("access_token");
     const searchParams = new URLSearchParams(window.location.search);
     const code = await searchParams.get("code");
     if (!code) {
@@ -97,18 +97,6 @@ export const getEvents = async () => {
       const data = localStorage.getItem("lastEvents");
       NProgress.done();
       return data ? JSON.parse(data).events : [];
-  }
-
-  if (result.data) {
-    var locations = extractLocations(result.data.events);
-    localStorage.setItem('lastEvents', JSON.stringify(result.data));
-    localStorage.setItem('locations', JSON.stringify(locations));
-  }
-
-  if (!navigator.onLine) {
-    const data = localStorage.getItem("lastEvents");
-    NProgress.done();
-    return data?JSON.parse(events).events:[];;
   }
 
   const token = await getAccessToken();
