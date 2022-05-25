@@ -1,11 +1,24 @@
-WelcomeScreen {
+.WelcomeScreen {
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     background: white;
-    }
-    .login-button {
+}
+
+.login_cont {
+    margin: 10% 30%;
+    padding: 5%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.text-cont {
+    border-bottom: 1px solid #ccc;
+}
+
+ .login-button {
     color: #494949;
     text-transform: uppercase;
     text-decoration: none;
@@ -15,23 +28,26 @@ WelcomeScreen {
     transition: all 0.4s ease 0s;
     min-width: 10rem;
     margin: 1rem;
-    }
-    .google-btn {
+} 
+
+.google-btn {
     width: 184px;
     height: 42px;
     margin: 1rem;
     background-color: #4285f4;
     border-radius: 2px;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
-    }
-    .google-btn:hover {
+}
+
+.google-btn:hover {
     box-shadow: 0 0 6px #4285f4;
-    }
-    Page 2
-    .google-btn:active {
+}
+
+.google-btn:active {
     background: #1669f2;
-    }
-    .google-icon-wrapper {
+}
+
+.google-icon-wrapper {
     position: absolute;
     margin-top: 1px;
     margin-left: 1px;
@@ -39,15 +55,17 @@ WelcomeScreen {
     height: 40px;
     border-radius: 2px;
     background-color: #fff;
-    }
-    .google-icon {
+}
+
+.google-icon {
     position: absolute;
     margin-top: 11px;
     margin-left: -8px;
     width: 18px;
     height: 18px;
-    }
-    .btn-text {
+}
+
+.btn-text {
     float: right;
     color: #fff;
     font-size: 14px;
@@ -57,5 +75,8 @@ WelcomeScreen {
     width: 80%;
     height: 100%;
     text-align: center;
-    }
-    
+}
+
+button {
+    border: none;
+}
