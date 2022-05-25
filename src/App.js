@@ -7,7 +7,7 @@ import NumberOfEvents from "./NumberOfEvents";
 import WelcomeScreen from './WelcomeScreen';
 import { getEvents, extractLocations, checkToken, getAccessToken } from
   './api';
-import { OfflineAlert } from '../Alert/Alert';
+import { OfflineAlert } from './Alert';
 
 
 class App extends Component {
